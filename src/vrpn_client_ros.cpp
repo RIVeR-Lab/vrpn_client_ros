@@ -187,8 +187,9 @@ namespace vrpn_client_ros
 
     if (tracker->broadcast_tf_)
     {
-      static tf2_ros::StaticTransformBroadcaster tf_broadcaster(nh, 1);
+      static tf2_ros::StaticTransformBroadcaster tf_broadcaster(nh);
       tracker->transform_stamped_.header.stamp = nh->now();
+      tracker->transform_stamped_.header.frame_id = "world";
       tracker->transform_stamped_.child_frame_id = tracker->tracker_name;
 
       tracker->transform_stamped_.transform.translation.x = tracker_pose.pos[0];
@@ -323,7 +324,7 @@ namespace vrpn_client_ros
     nh->declare_parameter("update_frequency", 100.0);
     nh->declare_parameter("frame_id", "world");
     nh->declare_parameter("use_server_time", false);
-    //nh->declare_parameter("broadcast_tf", true);
+    nh->declare_parameter("broadcast_tf", true);
     nh->declare_parameter("refresh_tracker_frequency", 1.0);
 
     std::vector<std::string> param_tracker_names;

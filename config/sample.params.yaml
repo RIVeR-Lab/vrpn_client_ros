@@ -3,6 +3,7 @@ vrpn_client_node:
     server: 192.168.1.197
     port: 3883
     frame_id: "world"
+    broadcast_tf: true
     use_server_time: false
     refresh_tracker_frequency: 0.2
-    update_frequency: 30.0
+    update_frequency: 60.0
