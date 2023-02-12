@@ -40,6 +40,7 @@
 #include "geometry_msgs/msg/twist_stamped.h"
 #include "geometry_msgs/msg/accel_stamped.h"
 #include "geometry_msgs/msg/transform_stamped.h"
+#include "tf2_ros/static_transform_broadcaster.h"
 
 #include <vrpn_Tracker.h>
 #include <vrpn_Connection.h>
@@ -90,7 +91,7 @@ namespace vrpn_client_ros
     geometry_msgs::msg::PoseStamped pose_msg_;
     // geometry_msgs::TwistStamped twist_msg_;
     // geometry_msgs::AccelStamped accel_msg_;
-    // geometry_msgs::TransformStamped transform_stamped_;
+    geometry_msgs::msg::TransformStamped transform_stamped_;
 
     void init(std::string tracker_name, rclcpp::Node::SharedPtr nh, bool create_mainloop_timer);
 

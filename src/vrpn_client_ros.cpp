@@ -185,40 +185,23 @@ namespace vrpn_client_ros
     tracker->pose_pub_->publish(tracker->pose_msg_);
     
 
-    // if (tracker->broadcast_tf_)
-    // {
-    //   static tf2_ros::TransformBroadcaster tf_broadcaster;
+    if (tracker->broadcast_tf_)
+    {
+      static tf2_ros::StaticTransformBroadcaster tf_broadcaster(nh, 1);
+      tracker->transform_stamped_.header.stamp = nh->now();
+      tracker->transform_stamped_.child_frame_id = tracker->tracker_name;
 
-    //   if (tracker->use_server_time_)
-    //   {
-    //     tracker->transform_stamped_.header.stamp.sec = tracker_pose.msg_time.tv_sec;
-    //     tracker->transform_stamped_.header.stamp.nsec = tracker_pose.msg_time.tv_usec * 1000;
-    //   }
-    //   else
-    //   {
-    //     tracker->transform_stamped_.header.stamp = ros::Time::now();
-    //   }
+      tracker->transform_stamped_.transform.translation.x = tracker_pose.pos[0];
+      tracker->transform_stamped_.transform.translation.y = tracker_pose.pos[1];
+      tracker->transform_stamped_.transform.translation.z = tracker_pose.pos[2];
 
-    //   if (tracker->process_sensor_id_)
-    //   {
-    //     tracker->transform_stamped_.child_frame_id = tracker->tracker_name + "/" + std::to_string(tracker_pose.sensor);
-    //   }
-    //   else
-    //   {
-    //     tracker->transform_stamped_.child_frame_id = tracker->tracker_name;
-    //   }
+      tracker->transform_stamped_.transform.rotation.x = tracker_pose.quat[0];
+      tracker->transform_stamped_.transform.rotation.y = tracker_pose.quat[1];
+      tracker->transform_stamped_.transform.rotation.z = tracker_pose.quat[2];
+      tracker->transform_stamped_.transform.rotation.w = tracker_pose.quat[3];
 
-    //   tracker->transform_stamped_.transform.translation.x = tracker_pose.pos[0];
-    //   tracker->transform_stamped_.transform.translation.y = tracker_pose.pos[1];
-    //   tracker->transform_stamped_.transform.translation.z = tracker_pose.pos[2];
-
-    //   tracker->transform_stamped_.transform.rotation.x = tracker_pose.quat[0];
-    //   tracker->transform_stamped_.transform.rotation.y = tracker_pose.quat[1];
-    //   tracker->transform_stamped_.transform.rotation.z = tracker_pose.quat[2];
-    //   tracker->transform_stamped_.transform.rotation.w = tracker_pose.quat[3];
-
-    //   tf_broadcaster.sendTransform(tracker->transform_stamped_);
-    // }
+      tf_broadcaster.sendTransform(tracker->transform_stamped_);
+    }
   }
 
   // void VRPN_CALLBACK VrpnTrackerRos::handle_twist(void *userData, const vrpn_TRACKERVELCB tracker_twist)
