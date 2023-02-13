@@ -1,0 +1,8 @@
+update_frequency: 120.0
+world: "world"
+offset_frame: "kettle"
+relative_tracking_name: "kettle_with_offset"
+translation_offset: [0.0, 0.0, 0.0]
+rotation_offset: [1.0, 0.0, 0.0, 0.0]
+rotation_offset: [1.0, 0.0, 0.0, 0.0] 
+to_track: ["kettle"] # list of all of the things to track

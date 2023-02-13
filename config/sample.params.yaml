@@ -6,4 +6,4 @@ vrpn_client_node:
     broadcast_tf: true
     use_server_time: false
     refresh_tracker_frequency: 0.2
-    update_frequency: 60.0
+    update_frequency: 120.0
