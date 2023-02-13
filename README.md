@@ -12,3 +12,6 @@ This for aims at porting the original code from the kinetic-devel branch to ROS2
         cmake ..
         sudo make -j4
         sudo make install
+
+        #relative tracking:
+        ros2 launch vrpn_client_ros egocentric.launch.py

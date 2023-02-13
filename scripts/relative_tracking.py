@@ -10,8 +10,7 @@ from tf2_ros.transform_listener import TransformListener
 
 import numpy as np
 import pandas as pd
-import time
-
+from datetime import datetime
 
 class RelativeTracking(Node):
     def __init__(self):
@@ -33,8 +32,12 @@ class RelativeTracking(Node):
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
-        self.transform_df = pd.DataFrame(columns=[
-                                         'timestamp', 'frame', 'tvec_x', 'tvec_y', 'tvec_y', 'quat_x', 'quat_y', 'quat_z', 'quat_w'])
+        self.transform_df = pd.DataFrame(columns=['timestamp', 'frame', 'tvec_x', 'tvec_y', 'tvec_z', 'quat_x', 'quat_y', 'quat_z', 'quat_w'])
+
+        current_time = datetime.now().strftime("%H:%M:%S")
+        self.file_name = 'relative_tracking_' + current_time + '.csv'
+
+        self.save_timer = self.create_timer(10, self.save_data) # potentially save once on shutdown. rospy.on_shutdown hook equivalent in ros2?
 
         self.timer = self.create_timer(
             (1.0/self.update_frequency), self.record_relative_frames)
@@ -49,20 +52,18 @@ class RelativeTracking(Node):
 
                 translation = [t.transform.translation.x,
                     t.transform.translation.y, t.transform.translation.z]
-                rotation = [t.transform.rotation.x, t.transform.rotation.y,
+                rotation = [t.transform.rotation.x, t.transstr(rclpy.time.Time())form.rotation.y,
                     t.transform.rotation.z, t.transform.rotation.w]
 
-                self.transform_df.loc[len(self.transform_df.index)] = [str(rclpy.time.Time().nanoseconds) + f", {child}", 
+                self.transform_df.loc[len(self.transform_df.index)] = [datetime.now(), 
                 child, translation[0], translation[1], translation[2], rotation[0], rotation[1], rotation[2], rotation[3]]
 
             except TransformException as ex:
                 self.get_logger().info(
                     f'Could not transform {self.world} to {child}: {ex} : May occur when system is spinng up')
         
-    def shutdown(self):
-        current_time = time.strftime("%Y%m%d_%H%M%S")
-        file_name = 'relative_tracking_' + current_time + '.csv'
-        self.transform_df.to_csv(file_name, sep=',', header=True, index=False)
+    def save_data(self):
+        self.transform_df.to_csv(self.file_name, sep=',', header=True, index=False)
 
 def main(args=None):
     rclpy.init(args=args)
