@@ -41,6 +41,7 @@
 #include "geometry_msgs/msg/accel_stamped.h"
 #include "geometry_msgs/msg/transform_stamped.h"
 #include "tf2_ros/static_transform_broadcaster.h"
+#include "tf2_ros/transform_broadcaster.h"
 
 #include <vrpn_Tracker.h>
 #include <vrpn_Connection.h>

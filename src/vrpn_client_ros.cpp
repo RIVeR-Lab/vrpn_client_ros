@@ -187,7 +187,7 @@ namespace vrpn_client_ros
 
     if (tracker->broadcast_tf_)
     {
-      static tf2_ros::StaticTransformBroadcaster tf_broadcaster(nh);
+      static tf2_ros::TransformBroadcaster tf_broadcaster(nh);
       tracker->transform_stamped_.header.stamp = nh->now();
       tracker->transform_stamped_.header.frame_id = "world";
       tracker->transform_stamped_.child_frame_id = tracker->tracker_name;
