@@ -7,6 +7,7 @@ This for aims at porting the original code from the kinetic-devel branch to ROS2
         git checkout humble
 
         git clone git@github.com:vrpn/vrpn.git
+        sudo apt-get install libusb-1.0
         mkdir build
         cd build
         cmake ..
