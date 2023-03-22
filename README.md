@@ -6,7 +6,7 @@ This for aims at porting the original code from the kinetic-devel branch to ROS2
         cd vrpn_client_ros
         git checkout humble
 
-        git clone git@github.com:zeroos/vrpn_client_ros.git
+        git clone git@github.com:vrpn/vrpn.git
         mkdir build
         cd build
         cmake ..
