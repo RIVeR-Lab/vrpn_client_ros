@@ -34,6 +34,7 @@
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2/LinearMath/Matrix3x3.h"
 #include "tf2_ros/transform_broadcaster.h"
+#include "time.h"
 
 #include "rclcpp/logging.hpp"
 
@@ -157,6 +158,9 @@ namespace vrpn_client_ros
     tracker->mainloop_executed_ = true;
 
     rclcpp::Node::SharedPtr nh = tracker->output_nh_;
+
+    // Initialize a common time object so time is not set dynamically throughout the node
+    rclcpp::Time current_time = nh->now();
     
     if (!tracker->pose_pub_)
     {
@@ -170,7 +174,8 @@ namespace vrpn_client_ros
     }
     else
     {
-      tracker->pose_msg_.header.stamp = nh->now();
+      // tracker->pose_msg_.header.stamp = nh->now();
+      tracker->pose_msg_.header.stamp = current_time;
     }
 
     tracker->pose_msg_.pose.position.x = tracker_pose.pos[0];
@@ -188,7 +193,8 @@ namespace vrpn_client_ros
     if (tracker->broadcast_tf_)
     {
       static tf2_ros::TransformBroadcaster tf_broadcaster(nh);
-      tracker->transform_stamped_.header.stamp = nh->now();
+      // tracker->transform_stamped_.header.stamp = nh->now();
+      tracker->transform_stamped_.header.stamp = current_time;
       tracker->transform_stamped_.header.frame_id = "world";
       tracker->transform_stamped_.child_frame_id = tracker->tracker_name;
 
